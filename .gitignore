@@ -1,0 +1,47 @@
+# Dependency directories
+node_modules/
+**/node_modules/
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# Next.js/Frontend build output
+frontend/.next/
+frontend/out/
+
+# Backend build output
+backend/dist/
+backend/logs/
+
+# Production/build files
+**/build/
+**/dist/
+
+# Environment files
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# Debug logs
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+**/.pnpm-debug.log*
+
+# TypeScript build info
+**/*.tsbuildinfo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Agent files
+brain/
+

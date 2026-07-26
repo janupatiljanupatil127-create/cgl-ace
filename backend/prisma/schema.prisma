@@ -1,0 +1,280 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum BookmarkType {
+  QUESTION
+  STUDY_MATERIAL
+  MOCK_TEST
+}
+
+enum CurrentAffairType {
+  DAILY
+  MONTHLY
+}
+
+enum OtpType {
+  EMAIL_VERIFICATION
+  PASSWORD_RESET
+}
+
+enum AttemptStatus {
+  IN_PROGRESS
+  SUBMITTED
+  AUTO_SUBMITTED
+}
+
+enum AnswerStatus {
+  ANSWERED
+  UNANSWERED
+  MARKED_FOR_REVIEW
+}
+
+model User {
+  id              String         @id @default(uuid())
+  email           String         @unique
+  password        String
+  name            String
+  role            Role           @default(STUDENT)
+  profilePicture  String?
+  isEmailVerified Boolean        @default(false)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  
+  refreshTokens   RefreshToken[]
+  otps            OTP[]
+  attempts        Attempt[]
+  bookmarks       Bookmark[]
+  notifications   Notification[]
+  activityLogs    ActivityLog[]
+  studyMaterials  StudyMaterial[] // Admin uploads
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model OTP {
+  id        String   @id @default(uuid())
+  code      String
+  type      OtpType
+  email     String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  isUsed    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Subject {
+  id             String          @id @default(uuid())
+  name           String          @unique // e.g. Quantitative Aptitude
+  code           String          @unique // e.g. QUANT
+  description    String?
+  topics         Topic[]
+  questions      Question[]
+  studyMaterials StudyMaterial[]
+  previousPapers PreviousPaper[]
+}
+
+model Topic {
+  id             String          @id @default(uuid())
+  name           String
+  description    String?
+  subjectId      String
+  subject        Subject         @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  questions      Question[]
+  studyMaterials StudyMaterial[]
+  
+  @@unique([name, subjectId])
+}
+
+model Question {
+  id            String             @id @default(uuid())
+  questionText  String
+  explanation   String?
+  subjectId     String
+  subject       Subject            @relation(fields: [subjectId], references: [id])
+  topicId       String
+  topic         Topic              @relation(fields: [topicId], references: [id])
+  difficulty    Difficulty         @default(MEDIUM)
+  marks         Float              @default(2.0)
+  negativeMarks Float              @default(0.5)
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  
+  options       Option[]
+  mockTests     MockTestQuestion[]
+  answers       AttemptAnswer[]
+  bookmarks     Bookmark[]
+}
+
+model Option {
+  id         String   @id @default(uuid())
+  text       String
+  isCorrect  Boolean  @default(false)
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  
+  answers    AttemptAnswer[]
+}
+
+model MockTest {
+  id           String             @id @default(uuid())
+  title        String
+  description  String?
+  duration     Int                // duration in minutes
+  totalMarks   Float
+  passingMarks Float
+  isPublished  Boolean            @default(false)
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  
+  questions    MockTestQuestion[]
+  attempts     Attempt[]
+  bookmarks    Bookmark[]
+}
+
+model MockTestQuestion {
+  id         String   @id @default(uuid())
+  mockTestId String
+  mockTest   MockTest @relation(fields: [mockTestId], references: [id], onDelete: Cascade)
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  order      Int      @default(0)
+
+  @@unique([mockTestId, questionId])
+}
+
+model Attempt {
+  id               String          @id @default(uuid())
+  userId           String
+  user             User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mockTestId       String
+  mockTest         MockTest        @relation(fields: [mockTestId], references: [id], onDelete: Cascade)
+  status           AttemptStatus   @default(IN_PROGRESS)
+  score            Float           @default(0.0)
+  correctCount     Int             @default(0)
+  wrongCount       Int             @default(0)
+  unattemptedCount Int             @default(0)
+  accuracy         Float           @default(0.0) // correct / (correct + wrong) * 100
+  timeTaken        Int             @default(0) // time taken in seconds
+  percentage       Float           @default(0.0)
+  rank             Int?            // computed rank relative to other submitted attempts
+  startedAt        DateTime        @default(now())
+  submittedAt      DateTime?
+  createdAt        DateTime        @default(now())
+  
+  answers          AttemptAnswer[]
+}
+
+model AttemptAnswer {
+  id               String       @id @default(uuid())
+  attemptId        String
+  attempt          Attempt      @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  questionId       String
+  question         Question     @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  selectedOptionId String?
+  selectedOption   Option?      @relation(fields: [selectedOptionId], references: [id], onDelete: SetNull)
+  isCorrect        Boolean      @default(false)
+  timeSpent        Int          @default(0) // time spent on this question in seconds
+  status           AnswerStatus @default(UNANSWERED)
+}
+
+model StudyMaterial {
+  id          String     @id @default(uuid())
+  title       String
+  description String?
+  pdfUrl      String
+  subjectId   String
+  subject     Subject    @relation(fields: [subjectId], references: [id])
+  topicId     String
+  topic       Topic      @relation(fields: [topicId], references: [id])
+  uploadedById String
+  uploadedBy  User       @relation(fields: [uploadedById], references: [id])
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  
+  bookmarks   Bookmark[]
+}
+
+model CurrentAffair {
+  id          String            @id @default(uuid())
+  title       String
+  description String?
+  content     String            @db.Text
+  pdfUrl      String?           // For monthly PDFs
+  date        DateTime          @default(now())
+  type        CurrentAffairType @default(DAILY)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+}
+
+model PreviousPaper {
+  id          String   @id @default(uuid())
+  title       String
+  year        Int
+  examType    String   // e.g. CGL Tier 1, CGL Tier 2
+  pdfUrl      String
+  subjectId   String
+  subject     Subject  @relation(fields: [subjectId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Bookmark {
+  id              String       @id @default(uuid())
+  userId          String
+  user            User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type            BookmarkType
+  questionId      String?
+  question        Question?    @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  studyMaterialId String?
+  studyMaterial   StudyMaterial? @relation(fields: [studyMaterialId], references: [id], onDelete: Cascade)
+  mockTestId      String?
+  mockTest        MockTest?    @relation(fields: [mockTestId], references: [id], onDelete: Cascade)
+  createdAt       DateTime     @default(now())
+
+  @@unique([userId, type, questionId, studyMaterialId, mockTestId])
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String?  // Nullable means global notification for all students
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model ActivityLog {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action    String   // e.g., LOGIN, LOGOUT, ATTEMPT_TEST
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+}

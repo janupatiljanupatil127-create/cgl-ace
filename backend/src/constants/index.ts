@@ -1,0 +1,41 @@
+export enum HttpStatus {
+  OK = 200,
+  CREATED = 201,
+  ACCEPTED = 202,
+  NO_CONTENT = 204,
+  BAD_REQUEST = 400,
+  UNAUTHORIZED = 401,
+  FORBIDDEN = 403,
+  NOT_FOUND = 404,
+  CONFLICT = 409,
+  UNPROCESSABLE_ENTITY = 422,
+  TOO_MANY_REQUESTS = 429,
+  INTERNAL_SERVER_ERROR = 500,
+}
+
+export const ROLES = {
+  STUDENT: 'STUDENT',
+  ADMIN: 'ADMIN',
+} as const;
+
+export const OTP_TYPES = {
+  EMAIL_VERIFICATION: 'EMAIL_VERIFICATION',
+  PASSWORD_RESET: 'PASSWORD_RESET',
+} as const;
+
+export const DIFFICULTY_LEVELS = {
+  EASY: 'EASY',
+  MEDIUM: 'MEDIUM',
+  HARD: 'HARD',
+} as const;
+
+export const BOOKMARK_TYPES = {
+  QUESTION: 'QUESTION',
+  STUDY_MATERIAL: 'STUDY_MATERIAL',
+  MOCK_TEST: 'MOCK_TEST',
+} as const;
+
+export const CURRENT_AFFAIR_TYPES = {
+  DAILY: 'DAILY',
+  MONTHLY: 'MONTHLY',
+} as const;
