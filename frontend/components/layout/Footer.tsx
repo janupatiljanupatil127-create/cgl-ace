@@ -30,10 +30,10 @@ export function Footer() {
     {
       title: "Exams Covered",
       links: [
-        { name: "SSC CGL (Tier I & II)", href: "#" },
-        { name: "SSC CHSL", href: "#" },
-        { name: "SSC CPO", href: "#" },
-        { name: "SSC MTS & GD", href: "#" },
+        { name: "SSC CGL Tier-I", href: "#" },
+        { name: "SSC CGL Tier-II", href: "#" },
+        { name: "SSC CGL Math & Reasoning", href: "#" },
+        { name: "SSC CGL English & GA", href: "#" },
       ],
     },
     {

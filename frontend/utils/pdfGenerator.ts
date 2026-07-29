@@ -1,4 +1,5 @@
-import { PYP, StudyMaterial } from "@/data/mockData";
+import { PYP, StudyMaterial, QUESTIONS_BY_TEST_OR_PAPER } from "@/data/mockData";
+
 
 function getNotesForSubject(subject: string, title: string): string[] {
   const t = title.toLowerCase();
@@ -159,7 +160,36 @@ function getPypQuestionsAndAnswers(): string[] {
   ];
 }
 
-export function generatePDFBlob(title: string, subject: string, type: string, publishDate: string, customNotes?: string[]): Blob {
+function getPypQuestionsAndAnswersForPaper(paperId: string): string[] {
+  const questions = QUESTIONS_BY_TEST_OR_PAPER[paperId];
+  if (!questions || questions.length === 0) {
+    return getPypQuestionsAndAnswers();
+  }
+
+  const lines: string[] = [];
+  let currentSection = "";
+
+  questions.forEach((q, idx) => {
+    if (q.section !== currentSection) {
+      currentSection = q.section;
+      lines.push("");
+      lines.push(`SECTION: ${currentSection.toUpperCase()}`);
+      lines.push("--------------------------------------------------");
+    }
+    lines.push(`Q${idx + 1}. ${q.questionText}`);
+    const optLine = q.options.map((opt: string, oIdx: number) => `${String.fromCharCode(65 + oIdx)}) ${opt}`).join("   ");
+    lines.push(`    ${optLine}`);
+    lines.push(`    Correct Answer: ${String.fromCharCode(65 + q.correctOptionIndex)}`);
+    if (q.explanation) {
+      lines.push(`    Explanation: ${q.explanation}`);
+    }
+    lines.push("");
+  });
+
+  return lines;
+}
+
+export function generatePDFBlob(title: string, subject: string, type: string, publishDate: string, customNotes?: string[], paperId?: string): Blob {
   const isPYP = type === "Previous Year Paper";
   
   const lines = isPYP ? [
@@ -172,7 +202,7 @@ export function generatePDFBlob(title: string, subject: string, type: string, pu
     "",
     "SAMPLE QUESTIONS & SOLUTIONS:",
     "----------------------------------------------------------------",
-    ...getPypQuestionsAndAnswers(),
+    ...(paperId ? getPypQuestionsAndAnswersForPaper(paperId) : getPypQuestionsAndAnswers()),
     "",
     "----------------------------------------------------------------",
     "Generated from CGL Ace Study App. Good luck with your preparation!",
@@ -194,49 +224,86 @@ export function generatePDFBlob(title: string, subject: string, type: string, pu
     "Visit: http://localhost:3000 for mock tests and previous papers."
   ];
 
-  // Adjust page height and starting Y coordinate based on whether it is a PYP
-  const pageHeight = isPYP ? 1008 : 792;
-  const startY = isPYP ? 950 : 740;
-
-  let streamText = `BT\n/F1 10 Tf\n14 TL\n50 ${startY} Td\n`;
-  for (const line of lines) {
-    if (line.trim() === "") {
-      streamText += "T*\n";
-    } else {
-      const escaped = line.replace(/[\\()]/g, "\\$&");
-      streamText += `(${escaped}) Tj T*\n`;
-    }
+  // Split lines into pages of 32 lines each to avoid clipping
+  const linesPerPage = 32;
+  const pages: string[][] = [];
+  for (let i = 0; i < lines.length; i += linesPerPage) {
+    pages.push(lines.slice(i, i + linesPerPage));
   }
-  streamText += "ET";
+  const pageCount = pages.length;
 
-  const object1 = "1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n";
-  const object2 = "2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n";
-  const object3 = `3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 ${pageHeight}] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>\nendobj\n`;
-  const object4 = "4 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj\n";
-  
-  const streamHeader = `5 0 obj\n<< /Length ${streamText.length} >>\nstream\n`;
-  const streamFooter = "\nendstream\nendobj\n";
-  const object5 = streamHeader + streamText + streamFooter;
+  const kids: string[] = [];
+  for (let p = 0; p < pageCount; p++) {
+    const pageId = p === 0 ? 3 : (2 * (p + 1) + 2);
+    kids.push(`${pageId} 0 R`);
+  }
+  const pagesKidsStr = `[${kids.join(" ")}]`;
+
+  const object1 = `1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n`;
+  const object2 = `2 0 obj\n<< /Type /Pages /Kids ${pagesKidsStr} /Count ${pageCount} >>\nendobj\n`;
+  const object4 = `4 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj\n`;
 
   const header = "%PDF-1.4\n";
-  
-  const offset1 = header.length;
-  const offset2 = offset1 + object1.length;
-  const offset3 = offset2 + object2.length;
-  const offset4 = offset3 + object3.length;
-  const offset5 = offset4 + object4.length;
-  
-  const xrefOffset = offset5 + object5.length;
-  
-  const xref = `xref\n0 6\n0000000000 65535 f \n${String(offset1).padStart(10, '0')} 00000 n \n${String(offset2).padStart(10, '0')} 00000 n \n${String(offset3).padStart(10, '0')} 00000 n \n${String(offset4).padStart(10, '0')} 00000 n \n${String(offset5).padStart(10, '0')} 00000 n \n`;
-  
-  const trailer = `trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF\n`;
+  const objects: { id: number; content: string }[] = [
+    { id: 1, content: object1 },
+    { id: 2, content: object2 },
+    { id: 4, content: object4 }
+  ];
 
-  const pdfContent = header + object1 + object2 + object3 + object4 + object5 + xref + trailer;
+  for (let p = 0; p < pageCount; p++) {
+    const pageId = p === 0 ? 3 : (2 * (p + 1) + 2);
+    const contentsId = p === 0 ? 5 : (2 * (p + 1) + 3);
+    const pageLines = pages[p];
 
-  const bytes = new Uint8Array(pdfContent.length);
-  for (let i = 0; i < pdfContent.length; i++) {
-    bytes[i] = pdfContent.charCodeAt(i);
+    let streamText = `BT\n/F1 10 Tf\n14 TL\n50 740 Td\n`;
+    for (const line of pageLines) {
+      if (line.trim() === "") {
+        streamText += "T*\n";
+      } else {
+        const escaped = line.replace(/[\\()]/g, "\\$&");
+        streamText += `(${escaped}) Tj T*\n`;
+      }
+    }
+    streamText += "ET";
+
+    const pageObj = `${pageId} 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R >> >> /Contents ${contentsId} 0 R >>\nendobj\n`;
+    const contentsObj = `${contentsId} 0 obj\n<< /Length ${streamText.length} >>\nstream\n${streamText}\nendstream\nendobj\n`;
+
+    objects.push({ id: pageId, content: pageObj });
+    objects.push({ id: contentsId, content: contentsObj });
+  }
+
+  // Sort objects by ID for the xref table
+  objects.sort((a, b) => a.id - b.id);
+
+  // Calculate byte offsets
+  let pdfContent = header;
+  const offsets: { [key: number]: number } = {};
+
+  for (const obj of objects) {
+    offsets[obj.id] = pdfContent.length;
+    pdfContent += obj.content;
+  }
+
+  const xrefOffset = pdfContent.length;
+  const size = objects.length + 2; // max ID is 2*pageCount + 3, so size should cover it
+
+  let xref = `xref\n0 ${size}\n0000000000 65535 f \n`;
+  for (let id = 1; id < size; id++) {
+    const offset = offsets[id];
+    if (offset !== undefined) {
+      xref += `${String(offset).padStart(10, "0")} 00000 n \n`;
+    } else {
+      xref += `0000000000 00000 f \n`;
+    }
+  }
+
+  const trailer = `trailer\n<< /Size ${size} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF\n`;
+  const finalPdf = pdfContent + xref + trailer;
+
+  const bytes = new Uint8Array(finalPdf.length);
+  for (let i = 0; i < finalPdf.length; i++) {
+    bytes[i] = finalPdf.charCodeAt(i);
   }
 
   return new Blob([bytes], { type: "application/pdf" });

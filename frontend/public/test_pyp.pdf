@@ -1,0 +1,103 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R 6 0 R] /Count 2 >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>
+endobj
+5 0 obj
+<< /Length 2326 >>
+stream
+BT
+/F1 10 Tf
+14 TL
+50 740 Td
+(SSC CGL OFFICIAL PREVIOUS YEAR PAPER - EXAM YEAR 2024) Tj T*
+(================================================================) Tj T*
+(Paper Name: SSC CGL Tier-I Question Paper 2024) Tj T*
+(Subject    : All Subjects \(Full Paper\)) Tj T*
+(Category   : Previous Year Paper) Tj T*
+(Instructions: Read questions carefully. Explanations are provided below.) Tj T*
+T*
+(SAMPLE QUESTIONS & SOLUTIONS:) Tj T*
+(----------------------------------------------------------------) Tj T*
+T*
+(SECTION: QUANTITATIVE APTITUDE) Tj T*
+(--------------------------------------------------) Tj T*
+(Q1. A and B can complete a piece of work in 12 days and 18 days respectively. They work together for 4 days, after which B is replaced by C. If the remaining work is completed by A and C in 4 days, in how many days can C alone complete the entire work?) Tj T*
+(    A\) 36 days   B\) 48 days   C\) 24 days   D\) 30 days) Tj T*
+(    Correct Answer: A) Tj T*
+(    Explanation: Work = 36 units \(LCM of 12 and 18\). Efficiency of A = 3, B = 2. Together they do \(3+2\)*4 = 20 units in 4 days. Remaining work = 16 units. Completed by A and C in 4 days => A and C together do 4 units per day. Since A's efficiency is 3, C's efficiency = 4 - 3 = 1 unit/day. C alone can complete the work in 36/1 = 36 days.) Tj T*
+T*
+T*
+(SECTION: GENERAL INTELLIGENCE & REASONING) Tj T*
+(--------------------------------------------------) Tj T*
+(Q2. Select the set in which the numbers are related in the same way as are the numbers of the following sets: \(12, 18, 225\) and \(14, 16, 225\)) Tj T*
+(    A\) \(11, 15, 169\)   B\) \(13, 17, 225\)   C\) \(15, 19, 289\)   D\) \(16, 22, 361\)) Tj T*
+(    Correct Answer: C) Tj T*
+(    Explanation: The pattern is: \(\(First number + Second number\) / 2\)² = Third number. \(\(12 + 18\) / 2\)² = 15² = 225. \(\(14 + 16\) / 2\)² = 15² = 225. For option C: \(\(15 + 19\) / 2\)² = 17² = 289.) Tj T*
+T*
+T*
+(SECTION: ENGLISH COMPREHENSION) Tj T*
+(--------------------------------------------------) Tj T*
+(Q3. Identify the option that rectifies the spelling error in the underlined word: The doctor advised him to maintain proper hfgene.) Tj T*
+(    A\) hygeine   B\) hygiene   C\) higene   D\) hygiena) Tj T*
+(    Correct Answer: B) Tj T*
+(    Explanation: The correct spelling is 'hygiene'.) Tj T*
+ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R >> >> /Contents 7 0 R >>
+endobj
+7 0 obj
+<< /Length 1605 >>
+stream
+BT
+/F1 10 Tf
+14 TL
+50 740 Td
+T*
+T*
+(SECTION: GENERAL AWARENESS) Tj T*
+(--------------------------------------------------) Tj T*
+(Q4. Under which Article of the Indian Constitution can a High Court issue writs for the enforcement of Fundamental Rights?) Tj T*
+(    A\) Article 32   B\) Article 226   C\) Article 131   D\) Article 143) Tj T*
+(    Correct Answer: B) Tj T*
+(    Explanation: Article 226 empowers High Courts to issue writs, whereas Article 32 empowers the Supreme Court to do so.) Tj T*
+T*
+T*
+(SECTION: QUANTITATIVE APTITUDE) Tj T*
+(--------------------------------------------------) Tj T*
+(Q5. If x + 1/x = 4, then what is the value of xu + 1/xu?) Tj T*
+(    A\) 724   B\) 728   C\) 736   D\) 740) Tj T*
+(    Correct Answer: A) Tj T*
+(    Explanation: x² + 1/x² = 4² - 2 = 14. x³ + 1/x³ = 4³ - 3\(4\) = 52. xu + 1/xu = \(x² + 1/x²\)\(x³ + 1/x³\) - \(x + 1/x\) = 14 * 52 - 4 = 728 - 4 = 724.) Tj T*
+T*
+T*
+(SECTION: GENERAL AWARENESS) Tj T*
+(--------------------------------------------------) Tj T*
+(Q6. Who was the founder of the Sunga Dynasty, which succeeded the Maurya Dynasty?) Tj T*
+(    A\) Pushyamitra Sunga   B\) Agnimitra Sunga   C\) Vasumitra Sunga   D\) Devabhuti) Tj T*
+(    Correct Answer: A) Tj T*
+(    Explanation: Pushyamitra Sunga founded the Sunga Dynasty in 185 BC after assassinating Brihadratha, the last Mauryan ruler.) Tj T*
+T*
+T*
+(----------------------------------------------------------------) Tj T*
+(Generated from CGL Ace Study App. Good luck with your preparation!) Tj T*
+(Visit: http://localhost:3000 for full mock tests and online study materials.) Tj T*
+ET
+endstream
+endobj
+xref
+0 6
+0000000000 65535 f
+trailer
+<< /Size 8 /Root 1 0 R >>
+%%EOF

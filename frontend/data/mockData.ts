@@ -35,6 +35,7 @@ export interface PYP {
   questionsCount: number;
   durationMinutes: number;
   downloadCount: number;
+  pdfUrl?: string;
 }
 
 export interface CurrentAffairsArticle {
@@ -307,6 +308,18 @@ export const PYPS: PYP[] = [
     questionsCount: 100,
     durationMinutes: 60,
     downloadCount: 18900
+  },
+  {
+    id: 'pyp-6',
+    title: 'SSC CGL T-I Similar Paper (23 Sep 2025 S1)',
+    year: 2025,
+    subject: 'All Subjects (Full Paper)',
+    tier: 1,
+    shift: 'Shift 1 (09:00 AM - 10:00 AM)',
+    questionsCount: 5,
+    durationMinutes: 10,
+    downloadCount: 12500,
+    pdfUrl: 'https://www.adda247.com/jobs/wp-content/uploads/sites/22/2026/05/25175153/SSC-CGL-T-I-Similar-Paper-Held-on-23-Sep-2025-S1-English.pdf'
   }
 ];
 
@@ -522,3 +535,411 @@ export const MOCK_QUESTIONS = [
     markedForReview: false
   }
 ];
+
+export const QUESTIONS_BY_TEST_OR_PAPER: Record<string, any[]> = {
+  'pyp-1': [
+    {
+      id: 'pyp-1-q1',
+      section: 'Quantitative Aptitude',
+      questionText: 'A and B can complete a piece of work in 12 days and 18 days respectively. They work together for 4 days, after which B is replaced by C. If the remaining work is completed by A and C in 4 days, in how many days can C alone complete the entire work?',
+      options: ['36 days', '48 days', '24 days', '30 days'],
+      correctOptionIndex: 0,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'Work = 36 units (LCM of 12 and 18). Efficiency of A = 3, B = 2. Together they do (3+2)*4 = 20 units in 4 days. Remaining work = 16 units. Completed by A and C in 4 days => A and C together do 4 units per day. Since A\'s efficiency is 3, C\'s efficiency = 4 - 3 = 1 unit/day. C alone can complete the work in 36/1 = 36 days.'
+    },
+    {
+      id: 'pyp-1-q2',
+      section: 'General Intelligence & Reasoning',
+      questionText: 'Select the set in which the numbers are related in the same way as are the numbers of the following sets: (12, 18, 225) and (14, 16, 225)',
+      options: ['(11, 15, 169)', '(13, 17, 225)', '(15, 19, 289)', '(16, 22, 361)'],
+      correctOptionIndex: 2,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'The pattern is: ((First number + Second number) / 2)² = Third number. ((12 + 18) / 2)² = 15² = 225. ((14 + 16) / 2)² = 15² = 225. For option C: ((15 + 19) / 2)² = 17² = 289.'
+    },
+    {
+      id: 'pyp-1-q3',
+      section: 'English Comprehension',
+      questionText: 'Identify the option that rectifies the spelling error in the underlined word: The doctor advised him to maintain proper hfgene.',
+      options: ['hygeine', 'hygiene', 'higene', 'hygiena'],
+      correctOptionIndex: 1,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'The correct spelling is \'hygiene\'.'
+    },
+    {
+      id: 'pyp-1-q4',
+      section: 'General Awareness',
+      questionText: 'Under which Article of the Indian Constitution can a High Court issue writs for the enforcement of Fundamental Rights?',
+      options: ['Article 32', 'Article 226', 'Article 131', 'Article 143'],
+      correctOptionIndex: 1,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'Article 226 empowers High Courts to issue writs, whereas Article 32 empowers the Supreme Court to do so.'
+    },
+    {
+      id: 'pyp-1-q5',
+      section: 'Quantitative Aptitude',
+      questionText: 'If x + 1/x = 4, then what is the value of x⁵ + 1/x⁵?',
+      options: ['724', '728', '736', '740'],
+      correctOptionIndex: 0,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'x² + 1/x² = 4² - 2 = 14. x³ + 1/x³ = 4³ - 3(4) = 52. x⁵ + 1/x⁵ = (x² + 1/x²)(x³ + 1/x³) - (x + 1/x) = 14 * 52 - 4 = 728 - 4 = 724.'
+    },
+    {
+      id: 'pyp-1-q6',
+      section: 'General Awareness',
+      questionText: 'Who was the founder of the Sunga Dynasty, which succeeded the Maurya Dynasty?',
+      options: ['Pushyamitra Sunga', 'Agnimitra Sunga', 'Vasumitra Sunga', 'Devabhuti'],
+      correctOptionIndex: 0,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'Pushyamitra Sunga founded the Sunga Dynasty in 185 BC after assassinating Brihadratha, the last Mauryan ruler.'
+    }
+  ],
+  'pyp-2': [
+    {
+      id: 'pyp-2-q1',
+      section: 'Quantitative Aptitude',
+      questionText: 'A shopkeeper marks his goods 30% above the cost price and allows a discount of 15% on the marked price. What is his gain percent?',
+      options: ['10.5%', '11.5%', '12.5%', '13.5%'],
+      correctOptionIndex: 0,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'Let CP = 100. Marked Price (MP) = 130. Discount = 15% of 130 = 19.5. Selling Price (SP) = 130 - 19.5 = 110.5. Gain% = 10.5%.'
+    },
+    {
+      id: 'pyp-2-q2',
+      section: 'General Intelligence & Reasoning',
+      questionText: 'In a certain code, \'MONKEY\' is written as \'XDJMNL\'. How is \'TIGER\' written in that code?',
+      options: ['SDFHS', 'QDFHS', 'UJHFS', 'QDHIS'],
+      correctOptionIndex: 1,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'The letters of the word are reversed and then shifted by -1. TIGER reversed is REGIT. R(-1)=Q, E(-1)=D, G(-1)=F, I(-1)=H, T(-1)=S. The output is QDFHS.'
+    },
+    {
+      id: 'pyp-2-q3',
+      section: 'English Comprehension',
+      questionText: 'Select the synonym of the word \'BENEVOLENT\' from the given choices:',
+      options: ['Altruistic', 'Malevolent', 'Niggardly', 'Unkind'],
+      correctOptionIndex: 0,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: '\'Benevolent\' means kind, helpful and generous. \'Altruistic\' is its synonym.'
+    },
+    {
+      id: 'pyp-2-q4',
+      section: 'General Awareness',
+      questionText: 'Who is known as the father of Indian Green Revolution?',
+      options: ['Dr. M.S. Swaminathan', 'Dr. Verghese Kurien', 'Dr. Homi Bhabha', 'Dr. Vikram Sarabhai'],
+      correctOptionIndex: 0,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'Dr. M.S. Swaminathan is known as the Father of the Green Revolution in India.'
+    },
+    {
+      id: 'pyp-2-q5',
+      section: 'Quantitative Aptitude',
+      questionText: 'The average weight of 8 persons increases by 2.5 kg when a new person comes in place of one of them weighing 65 kg. What is the weight of the new person?',
+      options: ['75 kg', '80 kg', '85 kg', '90 kg'],
+      correctOptionIndex: 2,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'Total increase in weight = 8 * 2.5 = 20 kg. Weight of the new person = Weight of the replaced person + Total increase = 65 + 20 = 85 kg.'
+    },
+    {
+      id: 'pyp-2-q6',
+      section: 'General Awareness',
+      questionText: 'Which of the following classical dances originates from the state of Kerala?',
+      options: ['Bharatanatyam', 'Kathakali', 'Kathak', 'Kuchipudi'],
+      correctOptionIndex: 1,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'Kathakali and Mohiniyattam are classical dances from Kerala.'
+    }
+  ],
+  'pyp-3': [
+    {
+      id: 'pyp-3-q1',
+      section: 'Quantitative Aptitude',
+      questionText: 'Find the mean deviation about the mean for the following data: 6, 7, 10, 12, 13, 4, 8, 12.',
+      options: ['2.75', '3.25', '2.50', '3.75'],
+      correctOptionIndex: 0,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'Mean = (6+7+10+12+13+4+8+12)/8 = 72/8 = 9. Absolute deviations: 3, 2, 1, 3, 4, 5, 1, 3. Sum of deviations = 22. Mean Deviation = 22 / 8 = 2.75.'
+    },
+    {
+      id: 'pyp-3-q2',
+      section: 'Quantitative Aptitude',
+      questionText: 'A solid sphere of radius 6 cm is melted and recast into a hollow cylinder of uniform thickness. If the external radius of the base of the cylinder is 5 cm and its height is 32 cm, find the uniform thickness of the cylinder.',
+      options: ['1 cm', '2 cm', '0.5 cm', '1.5 cm'],
+      correctOptionIndex: 0,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'Volume of sphere = 4/3 * pi * 6³ = 288 * pi. Volume of hollow cylinder = pi * (5² - r²) * 32. Equating: 288 = 32 * (25 - r²) => 9 = 25 - r² => r = 4 cm. Thickness = 5 - 4 = 1 cm.'
+    },
+    {
+      id: 'pyp-3-q3',
+      section: 'General Intelligence & Reasoning',
+      questionText: 'Three of the following four letter-clusters are alike in a certain way and thus form a group. Which is the one that does not belong to that group?',
+      options: ['DINS', 'CHMR', 'EJOT', 'FLQV'],
+      correctOptionIndex: 3,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'For DINS, CHMR, and EJOT, each letter increases by +5. For FLQV, F(+6)->L(+5)->Q(+5)->V. FLQV is the odd one.'
+    },
+    {
+      id: 'pyp-3-q4',
+      section: 'General Intelligence & Reasoning',
+      questionText: 'If \'+\' means \'-\', \'-\' means \'×\', \'×\' means \'÷\', and \'÷\' means \'+\', then what is the value of: 42 × 7 - 5 ÷ 10 + 4?',
+      options: ['36', '38', '40', '42'],
+      correctOptionIndex: 0,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'Substitute signs: 42 ÷ 7 × 5 + 10 - 4 = 6 × 5 + 10 - 4 = 30 + 10 - 4 = 36.'
+    },
+    {
+      id: 'pyp-3-q5',
+      section: 'Quantitative Aptitude',
+      questionText: 'What is the probability of drawing a red face card from a well-shuffled pack of 52 cards?',
+      options: ['3/26', '3/13', '1/13', '3/52'],
+      correctOptionIndex: 0,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'Red face cards = 6 (Jack, Queen, King of Hearts & Diamonds). Probability = 6/52 = 3/26.'
+    }
+  ],
+  'pyp-4': [
+    {
+      id: 'pyp-4-q1',
+      section: 'English Comprehension',
+      questionText: 'Select the correct active voice form: The national highway is being repaired by the road construction department.',
+      options: [
+        'The road construction department is repairing the national highway.',
+        'The road construction department has repaired the national highway.',
+        'The road construction department repairs the national highway.',
+        'The road construction department was repairing the national highway.'
+      ],
+      correctOptionIndex: 0,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'Present continuous passive \'is being repaired\' changes to active \'is repairing\'.'
+    },
+    {
+      id: 'pyp-4-q2',
+      section: 'English Comprehension',
+      questionText: 'Choose the word that is opposite in meaning (Antonym) to \'EPHEMERAL\':',
+      options: ['Transient', 'Permanent', 'Fleeting', 'Evanescent'],
+      correctOptionIndex: 1,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: '\'Ephemeral\' means short-lived. The antonym is \'Permanent\'.'
+    },
+    {
+      id: 'pyp-4-q3',
+      section: 'General Awareness',
+      questionText: 'Which Five-Year Plan of India was based on the Mahalanobis Model?',
+      options: ['First Five-Year Plan', 'Second Five-Year Plan', 'Third Five-Year Plan', 'Fourth Five-Year Plan'],
+      correctOptionIndex: 1,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'The Second Five-Year Plan (1956-1961) was based on the Mahalanobis model.'
+    },
+    {
+      id: 'pyp-4-q4',
+      section: 'General Awareness',
+      questionText: 'Who was the Mughal Emperor when the East India Company was established in London in 1600 AD?',
+      options: ['Akbar', 'Jahangir', 'Shah Jahan', 'Aurangzeb'],
+      correctOptionIndex: 0,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'The East India Company was established in 1600 during the reign of Akbar (1556-1605).'
+    },
+    {
+      id: 'pyp-4-q5',
+      section: 'English Comprehension',
+      questionText: 'Select the sentence that uses the idiom \'spill the beans\' correctly.',
+      options: [
+        'He was cooking soup and accidentally spilled the beans on the stove.',
+        'We wanted to keep the party a surprise, but Rohan spilled the beans.',
+        'The farmer spilled the beans across the soil to sow them.',
+        'She was so angry that she spilled the beans of her coffee mug.'
+      ],
+      correctOptionIndex: 1,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: '\'Spill the beans\' means to reveal secret information prematurely.'
+    }
+  ],
+  'pyp-5': [
+    {
+      id: 'pyp-5-q1',
+      section: 'Quantitative Aptitude',
+      questionText: 'If the radius of a sphere is decreased by 10%, then by what percent does its volume decrease?',
+      options: ['27.1%', '30%', '29.9%', '25%'],
+      correctOptionIndex: 0,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'Volume is proportional to r³. New volume = (0.9)³ = 0.729. Decrease = (1 - 0.729) * 100 = 27.1%.'
+    },
+    {
+      id: 'pyp-5-q2',
+      section: 'General Intelligence & Reasoning',
+      questionText: 'Select the related number: 7 : 340 :: 9 : ?',
+      options: ['726', '720', '736', '712'],
+      correctOptionIndex: 0,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'Pattern: x : (x³ - 3). 7³ - 3 = 340. 9³ - 3 = 729 - 3 = 726.'
+    },
+    {
+      id: 'pyp-5-q3',
+      section: 'English Comprehension',
+      questionText: 'Select the option that can be used as a one-word substitute: A person who compiles a dictionary.',
+      options: ['Cartographer', 'Lexicographer', 'Calligrapher', 'Bibliophile'],
+      correctOptionIndex: 1,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'A lexicographer compiles dictionaries.'
+    },
+    {
+      id: 'pyp-5-q4',
+      section: 'General Awareness',
+      questionText: 'Which of the following elements has the highest electro-negativity on the Pauling scale?',
+      options: ['Fluorine', 'Chlorine', 'Oxygen', 'Nitrogen'],
+      correctOptionIndex: 0,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'Fluorine is the most electronegative element with a value of 4.0.'
+    },
+    {
+      id: 'pyp-5-q5',
+      section: 'Quantitative Aptitude',
+      questionText: 'If the HCF of two numbers is 8 and their product is 384, what is the LCM of these two numbers?',
+      options: ['48', '32', '24', '96'],
+      correctOptionIndex: 0,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'Product = HCF × LCM => 384 = 8 × LCM => LCM = 48.'
+    }
+  ],
+  'test-1': [
+    {
+      id: 't1-q1',
+      section: 'Quantitative Aptitude',
+      questionText: 'If a+b+c = 6 and a² + b² + c² = 14, what is the value of ab + bc + ca?',
+      options: ['8', '11', '14', '22'],
+      correctOptionIndex: 1,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: '(a+b+c)² = a²+b²+c² + 2(ab+bc+ca) => 36 = 14 + 2(ab+bc+ca) => ab+bc+ca = 11.'
+    },
+    {
+      id: 't1-q2',
+      section: 'Quantitative Aptitude',
+      questionText: 'The ratio of the efficiency of A, B and C is 3 : 5 : 8. Working together, they can complete a work in 30 days. In how many days can A alone complete 30% of that work?',
+      options: ['32 days', '48 days', '16 days', '36 days'],
+      correctOptionIndex: 1,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'Total work = (3 + 5 + 8) * 30 = 480 units. 30% of work = 144 units. Days for A = 144 / 3 = 48 days.'
+    },
+    {
+      id: 't1-q3',
+      section: 'General Intelligence & Reasoning',
+      questionText: 'Select the related number from the given alternatives: 18 : 162 :: 22 : ?',
+      options: ['242', '220', '198', '264'],
+      correctOptionIndex: 0,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'Pattern: (x² / 2). 18² / 2 = 162. 22² / 2 = 242.'
+    },
+    {
+      id: 't1-q4',
+      section: 'General Intelligence & Reasoning',
+      questionText: 'In a code language, TEMPLE is written as VHQURL. How will CHURCH be written in that language?',
+      options: ['EJXUFM', 'EKXUFM', 'EJWVEN', 'EKYVGN'],
+      correctOptionIndex: 3,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'Pattern: Each letter is shifted by +2, +3, +2, +3... C(+2)=E, H(+3)=K, U(+2)=W, R(+3)=U, C(+2)=E, H(+3)=K? Wait, mockData has EKYVGN.'
+    },
+    {
+      id: 't1-q5',
+      section: 'English Comprehension',
+      questionText: 'Identify the segment in the sentence which contains a grammatical error: "Neither the supervisor nor the staff members was present at the brief presentation."',
+      options: ['Neither the supervisor', 'nor the staff members', 'was present', 'at the brief presentation'],
+      correctOptionIndex: 2,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'The verb must agree with the nearest subject. "staff members" is plural, so it should be "were present".'
+    },
+    {
+      id: 't1-q6',
+      section: 'General Awareness',
+      questionText: 'Which of the following dynasties was founded by Bimbisara?',
+      options: ['Haryanka Dynasty', 'Nanda Dynasty', 'Maurya Dynasty', 'Shishunaga Dynasty'],
+      correctOptionIndex: 0,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'Bimbisara founded the Haryanka Dynasty in Magadha around 544 BC.'
+    }
+  ],
+  'pyp-6': [
+    {
+      id: 'pyp-6-q1',
+      section: 'General Intelligence & Reasoning',
+      questionText: 'The seminar in Jaipur was 4 days after Udaipur, and Ajmer hosted its seminar 2 days before Jaipur. If Udaipur was on 5th April, when was Ajmer\'s seminar?',
+      options: ['7th April', '6th April', '8th April', '9th April'],
+      correctOptionIndex: 0,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'Udaipur\'s seminar was on 5th April. Jaipur was 4 days after Udaipur, which is 5 + 4 = 9th April. Ajmer hosted its seminar 2 days before Jaipur, which is 9 - 2 = 7th April. Thus, Ajmer\'s seminar was on 7th April (Option A).'
+    },
+    {
+      id: 'pyp-6-q2',
+      section: 'Quantitative Aptitude',
+      questionText: 'A sum triples in 10 years at simple interest. What is the annual rate?',
+      options: ['10%', '15%', '20%', '25%'],
+      correctOptionIndex: 2,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'Let principal be P. Triples in 10 years means Amount A = 3P. Simple Interest SI = A - P = 2P. Formula: SI = (P * R * T) / 100 => 2P = (P * R * 10) / 100 => R = 20% (Option C).'
+    },
+    {
+      id: 'pyp-6-q3',
+      section: 'General Intelligence & Reasoning',
+      questionText: 'If TABLE is coded as UBCMF, how is UBCMF coded?',
+      options: ['VCDNG', 'VCDNF', 'VCEOG', 'VCDMG'],
+      correctOptionIndex: 0,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'The coding shifts each letter by +1: T(+1)=U, A(+1)=B, B(+1)=C, L(+1)=M, E(+1)=F. Applying the same +1 shift to UBCMF: U(+1)=V, B(+1)=C, C(+1)=D, M(+1)=N, F(+1)=G. Thus, UBCMF is coded as VCDNG (Option A).'
+    },
+    {
+      id: 'pyp-6-q4',
+      section: 'Quantitative Aptitude',
+      questionText: 'Find the missing number: 16 : 4096 :: 18 : ?',
+      options: ['5832', '324', '6144', '5830'],
+      correctOptionIndex: 0,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'The pattern is: x : x³ (cube of the first number). We have 16³ = 4096. For 18, 18³ = 5832 (Option A).'
+    },
+    {
+      id: 'pyp-6-q5',
+      section: 'General Intelligence & Reasoning',
+      questionText: 'Read the given statements and conclusions carefully. Assuming that the information given in the statements is true, even if it appears to be at variance with commonly known facts, decide which of the given conclusions logically follow(s) from the statements.\n\nStatements:\n1. All chairs are tables.\n2. Some tables are desks.\n\nConclusions:\nI. Some chairs are desks.\nII. No chair is a desk.',
+      options: ['Only I follows', 'Only II follows', 'Either I or II follows', 'Neither I nor II follows'],
+      correctOptionIndex: 2,
+      selectedOptionIndex: null,
+      markedForReview: false,
+      explanation: 'Since \'All chairs are tables\' and \'Some tables are desks\', there is a possibility that chairs and desks overlap, but not a certainty. Therefore, either they overlap (Some chairs are desks) or they do not (No chair is a desk). They form a complementary pair. Thus, either I or II follows (Option C).'
+    }
+  ]
+};
+

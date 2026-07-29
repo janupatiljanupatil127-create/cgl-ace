@@ -1,13 +1,11 @@
 "use client"
 
 import * as React from "react"
-import { useRouter } from "next/navigation"
-import { FileText, Calendar, Plus, Trash2, CheckCircle2, AlertCircle, FilePlus, Sparkles, BookOpen } from "lucide-react"
+import { FileText, Calendar, Plus, Trash2, CheckCircle2, AlertCircle, FilePlus, Sparkles } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { STUDY_MATERIALS, PYPS, StudyMaterial, PYP } from "@/data/mockData"
 
 export default function AdminPortal() {
-  const router = useRouter()
   const [activeTab, setActiveTab] = React.useState<"materials" | "papers">("materials")
   const [successMsg, setSuccessMsg] = React.useState("")
   const [errorMsg, setErrorMsg] = React.useState("")

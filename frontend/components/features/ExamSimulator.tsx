@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { MockTest, MOCK_QUESTIONS } from "@/data/mockData"
+import { MockTest, MOCK_QUESTIONS, QUESTIONS_BY_TEST_OR_PAPER } from "@/data/mockData"
 import { Clock, User, Check, AlertTriangle, BarChart2, X } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -12,9 +12,16 @@ interface ExamSimulatorProps {
 
 export function ExamSimulator({ test, onClose }: ExamSimulatorProps) {
   // Simulator states
-  const [questions, setQuestions] = React.useState(
-    MOCK_QUESTIONS.map((q) => ({ ...q, selectedOptionIndex: null as number | null, markedForReview: false, visited: false }))
-  )
+  const [questions, setQuestions] = React.useState(() => {
+    const specificQs = QUESTIONS_BY_TEST_OR_PAPER[test.id];
+    const sourceQuestions = (specificQs && specificQs.length > 0) ? specificQs : MOCK_QUESTIONS;
+    return sourceQuestions.map((q) => ({
+      ...q,
+      selectedOptionIndex: null as number | null,
+      markedForReview: false,
+      visited: false
+    }));
+  });
   const [currentIdx, setCurrentIdx] = React.useState(0)
   const [timeLeft, setTimeLeft] = React.useState(test.durationMinutes * 60)
   const [isSubmitted, setIsSubmitted] = React.useState(false)
@@ -232,7 +239,7 @@ export function ExamSimulator({ test, onClose }: ExamSimulatorProps) {
 
                 {/* Multiple Choices Options */}
                 <div className="space-y-3">
-                  {currentQuestion.options.map((opt, optIdx) => {
+                  {currentQuestion.options.map((opt: string, optIdx: number) => {
                     const isSelected = currentQuestion.selectedOptionIndex === optIdx
                     return (
                       <button
@@ -419,7 +426,7 @@ export function ExamSimulator({ test, onClose }: ExamSimulatorProps) {
                 <div className="p-4 rounded-2xl bg-secondary/40 border border-border/40 text-center">
                   <span className="text-xs text-muted-foreground block font-medium">Final Score</span>
                   <span className="text-2xl font-extrabold text-primary tracking-tight mt-1 block">
-                    {scoreSummary.score} / 12
+                    {scoreSummary.score} / {questions.length * 2}
                   </span>
                 </div>
                 <div className="p-4 rounded-2xl bg-secondary/40 border border-border/40 text-center">

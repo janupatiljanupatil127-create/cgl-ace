@@ -197,15 +197,52 @@ async function main() {
     },
   });
 
-  // 7. Create Previous Year Paper
-  await prisma.previousPaper.create({
-    data: {
-      title: 'SSC CGL Tier 1 Paper 2025',
-      year: 2025,
-      examType: 'CGL Tier 1',
-      pdfUrl: 'https://res.cloudinary.com/demo/image/upload/v12345/sample_pyp.pdf',
-      subjectId: quant.id,
-    },
+  // 7. Create Previous Year Papers
+  await prisma.previousPaper.createMany({
+    data: [
+      {
+        title: 'SSC CGL Tier-I Question Paper 2024',
+        year: 2024,
+        examType: 'CGL Tier 1',
+        pdfUrl: 'https://res.cloudinary.com/demo/image/upload/v12345/pyp_2024_s1.pdf',
+        subjectId: quant.id,
+      },
+      {
+        title: 'SSC CGL Tier-I Question Paper 2024',
+        year: 2024,
+        examType: 'CGL Tier 1',
+        pdfUrl: 'https://res.cloudinary.com/demo/image/upload/v12345/pyp_2024_s2.pdf',
+        subjectId: reasoning.id,
+      },
+      {
+        title: 'SSC CGL Tier-II Math & Reasoning Question Paper 2023',
+        year: 2023,
+        examType: 'CGL Tier 2',
+        pdfUrl: 'https://res.cloudinary.com/demo/image/upload/v12345/pyp_2023_math.pdf',
+        subjectId: quant.id,
+      },
+      {
+        title: 'SSC CGL Tier-II English & GA Question Paper 2023',
+        year: 2023,
+        examType: 'CGL Tier 2',
+        pdfUrl: 'https://res.cloudinary.com/demo/image/upload/v12345/pyp_2023_eng.pdf',
+        subjectId: english.id,
+      },
+      {
+        title: 'SSC CGL Tier-I Full Question Paper 2022',
+        year: 2022,
+        examType: 'CGL Tier 1',
+        pdfUrl: 'https://res.cloudinary.com/demo/image/upload/v12345/pyp_2022_full.pdf',
+        subjectId: ga.id,
+      },
+      {
+        title: 'SSC CGL T-I Similar Paper (23 Sep 2025 S1)',
+        year: 2025,
+        examType: 'CGL Tier 1',
+        pdfUrl: 'https://res.cloudinary.com/demo/image/upload/v12345/pyp_2025_similar.pdf',
+        subjectId: reasoning.id,
+      },
+    ],
   });
 
   console.log('Seed completed successfully!');

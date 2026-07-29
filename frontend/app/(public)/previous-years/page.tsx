@@ -2,11 +2,12 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import { PYPS } from "@/data/mockData"
-import { Calendar, Download, CheckCircle, HelpCircle, ChevronRight, Loader2 } from "lucide-react"
+import { PYPS, PYP } from "@/data/mockData"
+import { Calendar, CheckCircle, HelpCircle, ChevronRight, Loader2 } from "lucide-react"
 import { motion } from "framer-motion"
 
 import { generatePDFBlob } from "@/utils/pdfGenerator"
+import { ExamSimulator } from "@/components/features/ExamSimulator"
 
 export default function PreviousYearsPage() {
   const router = useRouter()
@@ -18,6 +19,15 @@ export default function PreviousYearsPage() {
   const [downloadProgress, setDownloadProgress] = React.useState(0)
   const [downloadedIds, setDownloadedIds] = React.useState<string[]>([])
   const [papers, setPapers] = React.useState<typeof PYPS>([])
+  const [activePaper, setActivePaper] = React.useState<PYP | null>(null)
+
+  const handleStartCBT = (paper: PYP) => {
+    setActivePaper(paper)
+  }
+
+  const handleCloseCBT = () => {
+    setActivePaper(null)
+  }
 
   React.useEffect(() => {
     if (typeof window !== "undefined") {
@@ -54,16 +64,27 @@ export default function PreviousYearsPage() {
           const type = "Previous Year Paper"
           const dateStr = paper?.year ? `${paper.year}` : "N/A"
           
-          const blob = generatePDFBlob(title, subject, type, dateStr)
-          const url = URL.createObjectURL(blob)
+          if (paper?.pdfUrl) {
+            // Open or download direct external PDF links from original sources (like Adda247)
+            const link = document.createElement("a")
+            link.href = paper.pdfUrl
+            link.target = "_blank"
+            link.rel = "noopener noreferrer"
+            document.body.appendChild(link)
+            link.click()
+            document.body.removeChild(link)
+          } else {
+            const blob = generatePDFBlob(title, subject, type, dateStr, undefined, paper?.id)
+            const url = URL.createObjectURL(blob)
 
-          const link = document.createElement("a")
-          link.href = url
-          link.download = `${title}.pdf`
-          document.body.appendChild(link)
-          link.click()
-          document.body.removeChild(link)
-          URL.revokeObjectURL(url)
+            const link = document.createElement("a")
+            link.href = url
+            link.download = `${title}.pdf`
+            document.body.appendChild(link)
+            link.click()
+            document.body.removeChild(link)
+            URL.revokeObjectURL(url)
+          }
 
           return 100
         }
@@ -82,6 +103,25 @@ export default function PreviousYearsPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      {/* Immersive Exam Simulator Overlay */}
+      {activePaper && (
+        <ExamSimulator
+          test={{
+            id: activePaper.id,
+            title: activePaper.title,
+            durationMinutes: activePaper.durationMinutes,
+            category: "Full Length",
+            tier: activePaper.tier,
+            questionsCount: activePaper.questionsCount,
+            totalMarks: activePaper.questionsCount * 2,
+            difficulty: "Moderate",
+            attemptsCount: activePaper.downloadCount,
+            isAttempted: false
+          }}
+          onClose={handleCloseCBT}
+        />
+      )}
+
       {/* Breadcrumbs */}
       <div className="flex items-center space-x-2 text-xs text-muted-foreground mb-6">
         <span className="hover:text-foreground transition-colors cursor-pointer" onClick={() => router.push("/")}>Home</span>
@@ -142,72 +182,93 @@ export default function PreviousYearsPage() {
         </div>
       </div>
 
-      {/* PYP List Grid */}
+      {/* PYP List Table */}
       {filteredPapers.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {filteredPapers.map((paper) => {
-            const isDownloading = downloadingId === paper.id
-            const isDownloaded = downloadedIds.includes(paper.id)
+        <div className="overflow-x-auto rounded-2xl border border-border/80 bg-card shadow-md">
+          <table className="w-full min-w-[700px] border-collapse text-left">
+            <thead>
+              <tr className="border-b border-border/80 bg-secondary/30 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                <th className="px-6 py-4">Question Paper Description</th>
+                <th className="px-6 py-4 text-center w-48">Download PDF</th>
+                <th className="px-6 py-4 text-center w-48">Attempt Now</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border/50">
+              {filteredPapers.map((paper) => {
+                const isDownloading = downloadingId === paper.id
+                const isDownloaded = downloadedIds.includes(paper.id)
 
-            return (
-              <motion.div
-                key={paper.id}
-                whileHover={{ y: -4 }}
-                className="p-6 rounded-2xl bg-card border border-border/60 hover:border-primary/40 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
-              >
-                <div className="space-y-2">
-                  <div className="flex flex-wrap gap-2 items-center">
-                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-secondary text-secondary-foreground border border-border/40">
-                      {paper.year} Paper
-                    </span>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-primary/10 text-primary border border-primary/20">
-                      Tier {paper.tier}
-                    </span>
-                  </div>
-                  <h3 className="text-base font-bold text-foreground leading-snug">{paper.title}</h3>
-                  <p className="text-xs text-muted-foreground">
-                    Shift: <span className="font-semibold text-foreground">{paper.shift}</span> &bull; Subject: <span className="font-semibold text-foreground">{paper.subject}</span>
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    {paper.questionsCount} Qs &bull; {paper.durationMinutes} Mins &bull; {paper.downloadCount.toLocaleString()} downloads
-                  </p>
-                </div>
+                // Formatting shift text, e.g. "Shift 1"
+                const shiftShort = paper.shift.split(" (")[0] || "Shift 1"
 
-                {/* Download State Handler */}
-                <div className="w-full sm:w-auto flex-shrink-0">
-                  {isDownloading ? (
-                    <div className="w-32 space-y-2">
-                      <div className="h-1 bg-secondary rounded-full overflow-hidden">
-                        <motion.div
-                          className="h-full bg-gradient-to-r from-blue-600 to-purple-600"
-                          initial={{ width: 0 }}
-                          animate={{ width: `${downloadProgress}%` }}
-                          transition={{ duration: 0.12 }}
-                        />
+                return (
+                  <tr key={paper.id} className="hover:bg-secondary/15 transition-colors">
+                    <td className="px-6 py-5">
+                      <div className="space-y-1.5">
+                        <div className="flex items-center space-x-2">
+                          <span
+                            onClick={() => handleStartCBT(paper)}
+                            className="text-sm sm:text-base font-semibold text-foreground hover:text-primary transition-colors cursor-pointer leading-snug"
+                          >
+                            {paper.title} and Answer Key PDF (Year: {paper.year}) ({shiftShort})
+                          </span>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-muted-foreground">
+                          <span className="px-1.5 py-0.5 rounded bg-primary/10 text-primary border border-primary/20 font-bold">
+                            Tier {paper.tier}
+                          </span>
+                          <span>&bull;</span>
+                          <span className="font-semibold text-foreground/80">{paper.subject}</span>
+                          <span>&bull;</span>
+                          <span>{paper.questionsCount} Questions</span>
+                          <span>&bull;</span>
+                          <span>{paper.durationMinutes} Minutes</span>
+                        </div>
                       </div>
-                      <span className="text-[10px] text-muted-foreground block text-center font-bold flex items-center justify-center">
-                        <Loader2 className="h-3 w-3 animate-spin mr-1 text-primary" />
-                        Saving {downloadProgress}%
-                      </span>
-                    </div>
-                  ) : isDownloaded ? (
-                    <button className="w-full sm:w-auto px-4 py-2.5 rounded-xl text-xs font-bold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 flex items-center justify-center space-x-1.5 cursor-default">
-                      <CheckCircle className="h-4 w-4" />
-                      <span>PDF Downloaded</span>
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => handleDownload(paper.id)}
-                      className="w-full sm:w-auto px-4 py-2.5 rounded-xl text-xs font-bold border border-border hover:bg-secondary flex items-center justify-center space-x-1.5 cursor-pointer transition-colors"
-                    >
-                      <Download className="h-4 w-4" />
-                      <span>Download Paper</span>
-                    </button>
-                  )}
-                </div>
-              </motion.div>
-            )
-          })}
+                    </td>
+                    <td className="px-6 py-5 text-center">
+                      {isDownloading ? (
+                        <div className="inline-flex flex-col items-center space-y-1">
+                          <div className="w-24 h-1 bg-secondary rounded-full overflow-hidden">
+                            <motion.div
+                              className="h-full bg-gradient-to-r from-blue-600 to-purple-600"
+                              initial={{ width: 0 }}
+                              animate={{ width: `${downloadProgress}%` }}
+                              transition={{ duration: 0.12 }}
+                            />
+                          </div>
+                          <span className="text-[10px] text-muted-foreground font-bold flex items-center">
+                            <Loader2 className="h-3 w-3 animate-spin mr-1 text-primary" />
+                            {downloadProgress}%
+                          </span>
+                        </div>
+                      ) : isDownloaded ? (
+                        <span className="text-xs font-bold text-emerald-500 flex items-center justify-center space-x-1">
+                          <CheckCircle className="h-4 w-4" />
+                          <span>PDF Saved</span>
+                        </span>
+                      ) : (
+                        <button
+                          onClick={() => handleDownload(paper.id)}
+                          className="text-sm font-bold text-blue-600 hover:text-blue-800 hover:underline inline-flex items-center space-x-1 cursor-pointer transition-colors"
+                        >
+                          <span>Download PDF</span>
+                        </button>
+                      )}
+                    </td>
+                    <td className="px-6 py-5 text-center">
+                      <button
+                        onClick={() => handleStartCBT(paper)}
+                        className="text-sm font-bold text-rose-600 hover:text-rose-800 hover:underline inline-flex items-center space-x-1 cursor-pointer transition-colors"
+                      >
+                        <span>Attempt Now</span>
+                      </button>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
         </div>
       ) : (
         <div className="p-12 text-center rounded-3xl bg-secondary/10 border border-border/40 max-w-xl mx-auto flex flex-col items-center justify-center space-y-4">
