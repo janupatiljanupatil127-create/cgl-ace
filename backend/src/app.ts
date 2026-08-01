@@ -75,6 +75,13 @@ const swaggerOptions = {
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// Health check / Root route
+app.get('/', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'CGL Ace Backend is running successfully 🚀',
+  });
+});
 
 // Version 1 Routes
 app.use('/api/v1', routes);
